@@ -11,11 +11,11 @@ const jwt = require("jsonwebtoken");
 function verifyToken(req, res, next) {
   const token = req.headers["authorization"];
   let bearer = token && token.replace("Bearer ", "");
-  console.log("bearer", bearer);
   if (bearer) {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(bearer, process.env.JWT_SECRET);
     if (decoded) {
-      req.userLoginData = decoded.id;
+      console.log("decoded", decoded);
+      req.userLoginData = decoded.userId;
     }
     next();
   } else {
