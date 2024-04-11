@@ -9,19 +9,19 @@ module.exports = (sequelize, DataTypes) => {
       },
       taskName: {
         type: DataTypes.STRING,
-        validate: {
-          is: /^[a-zA-Z\s\,]+$/i,
-        },
       },
       description: DataTypes.STRING,
       docPath: DataTypes.STRING,
       startedAt: DataTypes.DATE,
       category: DataTypes.STRING,
       completedAt: DataTypes.DATE,
-      status: DataTypes.STRING,
+      status: {
+        type: DataTypes.ENUM("Inprogress", "Completed", "Blocked", "Hold"),
+        defaultValue: "Inprogress",
+      },
       isDeleted: {
-        type: DataTypes.BOOLEAN,
-        defaultValue: false,
+        type: DataTypes.ENUM("0", "1"),
+        defaultValue: "0",
       },
       userId: DataTypes.INTEGER,
     },

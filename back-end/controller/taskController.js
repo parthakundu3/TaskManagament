@@ -16,16 +16,14 @@ exports.taskCreate = (req, res) => {
       startedAt: startedAt,
       category: category,
       completedAt: completedAt,
-      status: "pending",
-      isDeleted: false,
-      userId: req.user.id,
+      userId: req.userLoginData,
     })
     .then((result) => {
       res.status(constants.HTTP_STATUS.CREATED);
       res.json(result);
     })
     .catch(async (error) => {
-      res.status(error.status);
+      res.status(constants.HTTP_STATUS.INTERNAL_SERVER_ERROR);
       res.json({
         message: error.message,
       });
