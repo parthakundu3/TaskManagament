@@ -13,7 +13,6 @@ import { useFormik } from 'formik';
 import { AppDispatch, RootState } from '@/app/GlobalRedux/store';
 import { useSelector, useDispatch } from 'react-redux';
 export const useAppDispatch = () => useDispatch<AppDispatch>();
-import { increment, decrement, incrementByAmount } from '@/app/GlobalRedux/Features/counter/counterSlice';
 import { createUser } from '@/app/GlobalRedux/Features/task/taskSlice';
 
 

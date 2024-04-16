@@ -2,6 +2,8 @@
 import apiService from "@/app/api/apiLists";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { AxiosError } from "axios";
+import Cookies from 'js-cookie';
+
 
 
 const initialState:any = [];
@@ -29,6 +31,25 @@ export const createUser = createAsyncThunk<RegisterPayload,{}>('users/create', a
     const response = await apiService.create(userData)
     //const response = await userAPI.updateById<UpdateUserResponse>(id, fields)
     return response.data;
+  } catch (err) {
+    const error: AxiosError<KnownError> = err as any; // cast the error for access
+    if (!error.response) {
+      throw err
+    }
+    // We got validation errors, let's return those so we can reference in our component and set form errors
+    return rejectWithValue(error.response.data)
+  }
+})
+let accessToken='';
+export const login = createAsyncThunk<any,any>('users/login', async (userData, { rejectWithValue }) => {
+  try {
+    const response = await apiService.login(userData)
+    console.log("Response data", response.data);
+    accessToken = response.data.token;
+    Cookies.set('accesstoken', response.data.token, { expires: 7, secure: true });
+    
+    //const response = await userAPI.updateById<UpdateUserResponse>(id, fields)
+    //return response.data;
   } catch (err) {
     const error: AxiosError<KnownError> = err as any; // cast the error for access
     if (!error.response) {
@@ -127,6 +148,19 @@ const taskSlice = createSlice({
         state.error = action.error.message
       }
     })
+    builder.addCase(login.fulfilled, (state, action: { payload: any; }) => {
+      //state.entities[payload.id] = payload
+      state.push(action.payload);
+    })
+     builder.addCase(login.rejected, (state, action) => {
+      if (action.payload) {
+        // Being that we passed in ValidationErrors to rejectType in `createAsyncThunk`, the payload will be available here.
+        state.error = action.payload;
+      } else {
+        state.error = action.error.message
+      }
+    })
+
   },
 })
 

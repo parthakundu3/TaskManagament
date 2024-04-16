@@ -51,10 +51,10 @@ exports.login = async (req, res) => {
       expiresIn: process.env.JWT_EXPIRATION_TIME,
     });
 
-    res.status(200).json({ messge: "Users Login Successfully", token });
-
-    res.json({
-      message: "Your password is incorrect",
+    res.status(200).json({
+      messge: "Users Login Successfully",
+      token: token,
+      userdata: userData,
     });
   }
 };
