@@ -12,6 +12,9 @@ const get = (id: number) => {
 const create = (data:{}) => {
   return http.post("/register", data);
 };
+const login = (data:{}) => {
+  return http.post("/login", data);
+};
 
 const update = (id: number, data:{}) => {
   return http.put(`/tutorials/${id}`, data);
@@ -33,6 +36,7 @@ const apiService = {
   getAll,
   get,
   create,
+  login,
   update,
   remove,
   removeAll,
